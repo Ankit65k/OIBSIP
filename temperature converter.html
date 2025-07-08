@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Temperature Converter</title>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --dark: #0f172a;
+      --light: #f1f5f9;
+      --gray-dark: #475569;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--dark);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .converter-container {
+      background-color: #1e293b;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: #334155;
+      color: white;
+      transition: background-color 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      background-color: #475569;
+    }
+
+    .unit-select {
+      margin-top: -1rem;
+      margin-bottom: 1rem;
+      font-style: italic;
+      color: var(--gray-dark);
+      text-align: right;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="converter-container">
+    <h1>🌡️ Temperature Converter</h1>
+
+    <div class="input-group">
+      <label for="celsius">Celsius (°C)</label>
+      <input type="number" id="celsius" placeholder="0" />
+    </div>
+
+    <div class="input-group">
+      <label for="fahrenheit">Fahrenheit (°F)</label>
+      <input type="number" id="fahrenheit" placeholder="32" />
+    </div>
+
+    <div class="input-group">
+      <label for="kelvin">Kelvin (K)</label>
+      <input type="number" id="kelvin" placeholder="273.15" />
+    </div>
+
+    <p class="unit-select">Type in any field to convert automatically.</p>
+
+    <div class="footer">
+      &copy; 2025 Temperature Converter
+    </div>
+  </div>
+
+  <script>
+    const celsiusInput = document.getElementById("celsius");
+    const fahrenheitInput = document.getElementById("fahrenheit");
+    const kelvinInput = document.getElementById("kelvin");
+
+    function celsiusToFahrenheit(celsius) {
+      return (celsius * 9/5) + 32;
+    }
+
+    function celsiusToKelvin(celsius) {
+      return celsius + 273.15;
+    }
+
+    function fahrenheitToCelsius(fahrenheit) {
+      return (fahrenheit - 32) * 5/9;
+    }
+
+    function fahrenheitToKelvin(fahrenheit) {
+      return fahrenheitToCelsius(fahrenheit) + 273.15;
+    }
+
+    function kelvinToCelsius(kelvin) {
+      return kelvin - 273.15;
+    }
+
+    function kelvinToFahrenheit(kelvin) {
+      return celsiusToFahrenheit(kelvinToCelsius(kelvin));
+    }
+
+    function updateTemperatures(input, value) {
+      if (input === "celsius") {
+        const celsius = parseFloat(value);
+        fahrenheitInput.value = isNaN(celsius) ? "" : celsiusToFahrenheit(celsius).toFixed(2);
+        kelvinInput.value = isNaN(celsius) ? "" : celsiusToKelvin(celsius).toFixed(2);
+      } else if (input === "fahrenheit") {
+        const fahrenheit = parseFloat(value);
+        celsiusInput.value = isNaN(fahrenheit) ? "" : fahrenheitToCelsius(fahrenheit).toFixed(2);
+        kelvinInput.value = isNaN(fahrenheit) ? "" : fahrenheitToKelvin(fahrenheit).toFixed(2);
+      } else if (input === "kelvin") {
+        const kelvin = parseFloat(value);
+        celsiusInput.value = isNaN(kelvin) ? "" : kelvinToCelsius(kelvin).toFixed(2);
+        fahrenheitInput.value = isNaN(kelvin) ? "" : kelvinToFahrenheit(kelvin).toFixed(2);
+      }
+    }
+
+    celsiusInput.addEventListener("input", (e) => updateTemperatures("celsius", e.target.value));
+    fahrenheitInput.addEventListener("input", (e) => updateTemperatures("fahrenheit", e.target.value));
+    kelvinInput.addEventListener("input", (e) => updateTemperatures("kelvin", e.target.value));
+  </script>
+</body>
+</html>
